@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\File;
+// use ExportLocalization;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,5 +14,5 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('{any}', function () {
-    return view('index');
+    return view('index', ['messages' => ExportLocalization::export()->toArray()]);
 })->where('any', '.*');

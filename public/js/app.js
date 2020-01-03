@@ -1910,9 +1910,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     isLoging: function isLoging() {
@@ -1929,6 +1926,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return false;
+    },
+    getLangs: function getLangs() {
+      return this.$langs;
     }
   },
   methods: {
@@ -31013,6 +31013,399 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
+/***/ "./node_modules/lang.js/esm/lang.js":
+/*!******************************************!*\
+  !*** ./node_modules/lang.js/esm/lang.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+
+
+function inferLocale() {
+    if (document && document.documentElement) {
+        return document.documentElement.lang;
+    }
+}
+function convertNumber(str) {
+    if (str === '-Inf') {
+        return -Infinity;
+    }
+    else if (str === '+Inf' || str === 'Inf' || str === '*') {
+        return Infinity;
+    }
+    return parseInt(str, 10);
+}
+function applyReplacements(message, replacements) {
+    var keys = Object.keys(replacements).sort(function (a, b) { return b.length - a.length; });
+    keys.forEach(function (replace) {
+        message = message.replace(new RegExp(':' + replace, 'gi'), function (key) {
+            var value = replacements[replace];
+            // Capitalize all characters.
+            var allCaps = key === key.toUpperCase();
+            if (allCaps) {
+                return value.toUpperCase();
+            }
+            // Capitalize first letter.
+            var firstCap = key ===
+                key.replace(/\w/i, function (letter) {
+                    return letter.toUpperCase();
+                });
+            if (firstCap) {
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+            return value;
+        });
+    });
+    return message;
+}
+var intervalRegexp = /^({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])$/;
+function testInterval(count, interval) {
+    /**
+     * From the Symfony\Component\Translation\Interval Docs
+     *
+     * Tests if a given number belongs to a given math interval.
+     *
+     * An interval can represent a finite set of numbers:
+     *
+     *  {1,2,3,4}
+     *
+     * An interval can represent numbers between two numbers:
+     *
+     *  [1, +Inf]
+     *  ]-1,2[
+     *
+     * The left delimiter can be [ (inclusive) or ] (exclusive).
+     * The right delimiter can be [ (exclusive) or ] (inclusive).
+     * Beside numbers, you can use -Inf and +Inf for the infinite.
+     */
+    interval = interval.trim();
+    var matches = interval.match(intervalRegexp);
+    if (!matches) {
+        throw new Error("Invalid interval: " + interval);
+    }
+    if (matches[2]) {
+        var items = matches[2].split(',');
+        for (var i = 0; i < items.length; i++) {
+            if (parseInt(items[i], 10) === count) {
+                return true;
+            }
+        }
+    }
+    else {
+        // Remove falsy values.
+        matches = matches.filter(function (match) {
+            return !!match;
+        });
+        var leftDelimiter = matches[1];
+        var leftNumber = convertNumber(matches[2]);
+        if (leftNumber === Infinity) {
+            leftNumber = -Infinity;
+        }
+        var rightNumber = convertNumber(matches[3]);
+        var rightDelimiter = matches[4];
+        return ((leftDelimiter === '[' ? count >= leftNumber : count > leftNumber) &&
+            (rightDelimiter === ']' ? count <= rightNumber : count < rightNumber));
+    }
+    return false;
+}
+/**
+ * Returns the plural position to use for the given locale and number.
+ *
+ * The plural rules are derived from code of the Zend Framework (2010-09-25),
+ * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).
+ * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ */
+function getPluralForm(count, locale) {
+    switch (locale) {
+        case 'az':
+        case 'bo':
+        case 'dz':
+        case 'id':
+        case 'ja':
+        case 'jv':
+        case 'ka':
+        case 'km':
+        case 'kn':
+        case 'ko':
+        case 'ms':
+        case 'th':
+        case 'tr':
+        case 'vi':
+        case 'zh':
+            return 0;
+        case 'af':
+        case 'bn':
+        case 'bg':
+        case 'ca':
+        case 'da':
+        case 'de':
+        case 'el':
+        case 'en':
+        case 'eo':
+        case 'es':
+        case 'et':
+        case 'eu':
+        case 'fa':
+        case 'fi':
+        case 'fo':
+        case 'fur':
+        case 'fy':
+        case 'gl':
+        case 'gu':
+        case 'ha':
+        case 'he':
+        case 'hu':
+        case 'is':
+        case 'it':
+        case 'ku':
+        case 'lb':
+        case 'ml':
+        case 'mn':
+        case 'mr':
+        case 'nah':
+        case 'nb':
+        case 'ne':
+        case 'nl':
+        case 'nn':
+        case 'no':
+        case 'om':
+        case 'or':
+        case 'pa':
+        case 'pap':
+        case 'ps':
+        case 'pt':
+        case 'so':
+        case 'sq':
+        case 'sv':
+        case 'sw':
+        case 'ta':
+        case 'te':
+        case 'tk':
+        case 'ur':
+        case 'zu':
+            return count == 1 ? 0 : 1;
+        case 'am':
+        case 'bh':
+        case 'fil':
+        case 'fr':
+        case 'gun':
+        case 'hi':
+        case 'hy':
+        case 'ln':
+        case 'mg':
+        case 'nso':
+        case 'xbr':
+        case 'ti':
+        case 'wa':
+            return count === 0 || count === 1 ? 0 : 1;
+        case 'be':
+        case 'bs':
+        case 'hr':
+        case 'ru':
+        case 'sr':
+        case 'uk':
+            return count % 10 == 1 && count % 100 != 11
+                ? 0
+                : count % 10 >= 2 &&
+                    count % 10 <= 4 &&
+                    (count % 100 < 10 || count % 100 >= 20)
+                    ? 1
+                    : 2;
+        case 'cs':
+        case 'sk':
+            return count == 1 ? 0 : count >= 2 && count <= 4 ? 1 : 2;
+        case 'ga':
+            return count == 1 ? 0 : count == 2 ? 1 : 2;
+        case 'lt':
+            return count % 10 == 1 && count % 100 != 11
+                ? 0
+                : count % 10 >= 2 && (count % 100 < 10 || count % 100 >= 20)
+                    ? 1
+                    : 2;
+        case 'sl':
+            return count % 100 == 1
+                ? 0
+                : count % 100 == 2
+                    ? 1
+                    : count % 100 == 3 || count % 100 == 4
+                        ? 2
+                        : 3;
+        case 'mk':
+            return count % 10 == 1 ? 0 : 1;
+        case 'mt':
+            return count == 1
+                ? 0
+                : count === 0 || (count % 100 > 1 && count % 100 < 11)
+                    ? 1
+                    : count % 100 > 10 && count % 100 < 20
+                        ? 2
+                        : 3;
+        case 'lv':
+            return count === 0 ? 0 : count % 10 == 1 && count % 100 != 11 ? 1 : 2;
+        case 'pl':
+            return count == 1
+                ? 0
+                : count % 10 >= 2 &&
+                    count % 10 <= 4 &&
+                    (count % 100 < 12 || count % 100 > 14)
+                    ? 1
+                    : 2;
+        case 'cy':
+            return count == 1 ? 0 : count == 2 ? 1 : count == 8 || count == 11 ? 2 : 3;
+        case 'ro':
+            return count == 1
+                ? 0
+                : count === 0 || (count % 100 > 0 && count % 100 < 20)
+                    ? 1
+                    : 2;
+        case 'ar':
+            return count === 0
+                ? 0
+                : count == 1
+                    ? 1
+                    : count == 2
+                        ? 2
+                        : count % 100 >= 3 && count % 100 <= 10
+                            ? 3
+                            : count % 100 >= 11 && count % 100 <= 99
+                                ? 4
+                                : 5;
+        default:
+            return 0;
+    }
+}
+function flat(obj, path) {
+    return Object.keys(obj).reduce(function (flatten, key) {
+        var value = obj[key];
+        var flattenPath = path ? path + "." + key : key;
+        if (typeof value === 'string') {
+            flatten[flattenPath] = obj[key];
+            return flatten;
+        }
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, flatten, flat(value, flattenPath));
+    }, {});
+}
+
+var DEFAULT_LOCALE = 'en';
+var anyIntervalRegexp = /({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])/;
+var Lang = /** @class */ (function () {
+    function Lang(options) {
+        this.locale = null;
+        this.fallback = null;
+        this.messages = {};
+        if (!options) {
+            throw new Error('options must be defined');
+        }
+        this.locale = options.locale || inferLocale() || DEFAULT_LOCALE;
+        this.fallback = options.fallback;
+        this.setMessages(options.messages);
+    }
+    Lang.prototype.setMessages = function (messages) {
+        if (messages) {
+            this.messages = flat(messages);
+        }
+    };
+    Lang.prototype.getLocale = function () {
+        return this.locale;
+    };
+    Lang.prototype.setLocale = function (locale) {
+        this.locale = locale;
+    };
+    Lang.prototype.getFallback = function () {
+        return this.fallback;
+    };
+    Lang.prototype.setFallback = function (fallback) {
+        this.fallback = fallback;
+    };
+    Lang.prototype.get = function (key, replacements, locale) {
+        if (!key) {
+            return null;
+        }
+        key = key.replace(/\//g, '.');
+        var _a = this._parseKey(key, locale), source = _a.source, sourceFallback = _a.sourceFallback;
+        var message = this.messages[source];
+        if (message === undefined) {
+            message = this.messages[sourceFallback];
+            if (message === undefined) {
+                return key;
+            }
+        }
+        if (replacements) {
+            return applyReplacements(message, replacements);
+        }
+        return message;
+    };
+    Lang.prototype.trans = function (key, replacements, locale) {
+        return this.get(key, replacements, locale);
+    };
+    Lang.prototype.has = function (key, locale) {
+        var message = this.get(key, null, locale);
+        return message !== null && message !== key;
+    };
+    Lang.prototype.choice = function (key, number, replacements, locale) {
+        if (replacements === void 0) { replacements = {}; }
+        replacements.count = number;
+        var message = this.get(key, replacements, locale);
+        if (message === null) {
+            return message;
+        }
+        var messageParts = message.split('|');
+        var explicitRules = [];
+        for (var i = 0; i < messageParts.length; i++) {
+            messageParts[i] = messageParts[i].trim();
+            if (anyIntervalRegexp.test(messageParts[i])) {
+                var messageSpaceSplit = messageParts[i].split(/\s/);
+                explicitRules.push(messageSpaceSplit.shift());
+                messageParts[i] = messageSpaceSplit.join(' ');
+            }
+        }
+        // Check if there's only one message
+        if (messageParts.length === 1) {
+            // Nothing to do here
+            return message;
+        }
+        // Check the explicit rules
+        for (var j = 0; j < explicitRules.length; j++) {
+            if (testInterval(number, explicitRules[j])) {
+                return messageParts[j];
+            }
+        }
+        locale = locale || this._getLocaleFromExistingMessage(key, locale);
+        var pluralForm = getPluralForm(number, locale);
+        return messageParts[pluralForm];
+    };
+    Lang.prototype.transChoice = function (key, number, replacements, locale) {
+        return this.choice(key, number, replacements, locale);
+    };
+    Lang.prototype._getLocaleFromExistingMessage = function (key, locale) {
+        var keyObj = this._parseKey(key, locale);
+        if (this.messages[keyObj.source]) {
+            return this.locale;
+        }
+        if (this.messages[keyObj.sourceFallback]) {
+            return this.fallback;
+        }
+        return null;
+    };
+    Lang.prototype._parseKey = function (key, locale) {
+        key = key.replace(/\//g, '.');
+        return {
+            source: (locale || this.locale) + "." + key,
+            sourceFallback: this.fallback + "." + key
+        };
+    };
+    return Lang;
+}());
+
+/* harmony default export */ __webpack_exports__["default"] = (Lang);
+
+
+/***/ }),
+
 /***/ "./node_modules/popper.js/dist/esm/popper.js":
 /*!***************************************************!*\
   !*** ./node_modules/popper.js/dist/esm/popper.js ***!
@@ -36015,6 +36408,235 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/tslib/tslib.es6.js":
+/*!*****************************************!*\
+  !*** ./node_modules/tslib/tslib.es6.js ***!
+  \*****************************************/
+/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__extends", function() { return __extends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__rest", function() { return __rest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__decorate", function() { return __decorate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__param", function() { return __param; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__metadata", function() { return __metadata; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__awaiter", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__generator", function() { return __generator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__exportStar", function() { return __exportStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spreadArrays", function() { return __spreadArrays; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncValues", function() { return __asyncValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __exportStar(m, exports) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+
+function __values(o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result.default = mod;
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-functional-data-merge/dist/lib.esm.js":
 /*!****************************************************************!*\
   !*** ./node_modules/vue-functional-data-merge/dist/lib.esm.js ***!
@@ -36149,23 +36771,13 @@ var render = function() {
                   _c(
                     "b-nav-item-dropdown",
                     { attrs: { text: "Lang", right: "" } },
-                    [
-                      _c("b-dropdown-item", { attrs: { href: "#" } }, [
-                        _vm._v("EN")
-                      ]),
-                      _vm._v(" "),
-                      _c("b-dropdown-item", { attrs: { href: "#" } }, [
-                        _vm._v("ES")
-                      ]),
-                      _vm._v(" "),
-                      _c("b-dropdown-item", { attrs: { href: "#" } }, [
-                        _vm._v("RU")
-                      ]),
-                      _vm._v(" "),
-                      _c("b-dropdown-item", { attrs: { href: "#" } }, [
-                        _vm._v("FA")
-                      ])
-                    ],
+                    _vm._l(_vm.getLangs, function(lang) {
+                      return _c(
+                        "b-dropdown-item",
+                        { key: lang, attrs: { href: "#" } },
+                        [_vm._v(_vm._s(_vm._f("uppercase")(lang)))]
+                      )
+                    }),
                     1
                   )
                 ],
@@ -52616,13 +53228,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! portal-vue */ "./node_modules/portal-vue/dist/portal-vue.common.js");
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(portal_vue__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _views_App__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./views/App */ "./resources/js/views/App.vue");
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lang.js */ "./node_modules/lang.js/esm/lang.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _views_App__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./views/App */ "./resources/js/views/App.vue");
 
 
 
@@ -52631,15 +53244,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.trans = new lang_js__WEBPACK_IMPORTED_MODULE_3__["default"]({
+  messages: window.messages,
+  locale: window.default_language,
+  fallback: window.fallback_locale
+});
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$langs = Object.keys(window.messages);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('uppercase', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.toUpperCase();
+});
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(portal_vue__WEBPACK_IMPORTED_MODULE_2___default.a);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   render: function render(h) {
-    return h(_views_App__WEBPACK_IMPORTED_MODULE_7__["default"]);
+    return h(_views_App__WEBPACK_IMPORTED_MODULE_8__["default"]);
   },
-  router: _router__WEBPACK_IMPORTED_MODULE_3__["default"],
-  store: _store_store__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _router__WEBPACK_IMPORTED_MODULE_4__["default"],
+  store: _store_store__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),
@@ -53314,7 +53939,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\calendar\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\vue-laravel\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })

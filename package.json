@@ -23,5 +23,8 @@
         "bootstrap-vue": "^2.1.0",
         "portal-vue": "^2.1.6",
         "vue-resource": "^1.5.1"
+    },
+    "dependencies": {
+        "lang.js": "^2.0.0-beta.1"
     }
 }
