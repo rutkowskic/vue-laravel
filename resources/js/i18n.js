@@ -16,7 +16,9 @@ const messages = {
     }
 }
 
-export default i18n = new VueI18n({
+const i18l = new VueI18n({
     locale: 'en',
     messages, 
 })
+
+export default i18l
