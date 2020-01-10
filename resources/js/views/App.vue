@@ -1,7 +1,7 @@
 <template>
     <nav>
         <b-navbar toggleable="lg" type="light" >
-            <b-navbar-brand href="#">Calendar</b-navbar-brand>
+            <b-navbar-brand href="#">{{ $t("main.calendar") }}</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -10,19 +10,19 @@
                 <b-navbar-nav class="ml-auto">
 
                     <b-nav-item-dropdown text="Auth" right v-if="!isLoging">
-                        <b-dropdown-item :to="{ name: 'login' }">Login</b-dropdown-item>
-                        <b-dropdown-item :to="{ name: 'register' }">Register</b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'login' }">{{ $t("auth.login") }}</b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'register' }">{{ $t("auth.register") }}</b-dropdown-item>
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown text="User" right v-if="isLoging">
-                        <b-dropdown-item :to="{ name: 'user' }">User</b-dropdown-item>
-                        <b-dropdown-item :to="{ name: 'admin' }">Admin</b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'user' }">{{ $t("auth.user") }}</b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'admin' }">{{ $t("auth.admin") }}</b-dropdown-item>
                         <b-dropdown-divider></b-dropdown-divider>
                         <b-dropdown-item href="#" @click="logout()">Logout</b-dropdown-item>
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown text="Lang" right>
-                        <b-dropdown-item href="#" v-for="lang in getLangs" :key="lang">{{ lang | uppercase }}</b-dropdown-item>
+                        <b-dropdown-item href="#" v-for="(lang, i) in langs" :key="i" @click="changeLangs(lang)">{{ lang | uppercase }}</b-dropdown-item>
                     </b-nav-item-dropdown>
 
                 </b-navbar-nav>
@@ -38,6 +38,11 @@
 </template>
 <script>
     export default {
+        data: function () {
+            return {
+                langs: ['en', 'pl']
+            }
+        },
         computed: {
             isLoging() {
                 const { user, token } = this.$store.getters;
@@ -49,15 +54,16 @@
                     return true;
                 }
                 return false;
-            },
-            getLangs(){
-                return this.$langs;
             }
         },
         methods: {
             logout(){
                 this.$store.dispatch('logoutUser');
                 this.$router.push({ name: 'home'})
+            },
+            changeLangs(lang){
+                console.log(lang)
+                this.$i18n.locale = lang
             }
         }
     }

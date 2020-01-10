@@ -1911,6 +1911,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      langs: ['en', 'pl']
+    };
+  },
   computed: {
     isLoging: function isLoging() {
       var _this$$store$getters = this.$store.getters,
@@ -1926,9 +1931,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return false;
-    },
-    getLangs: function getLangs() {
-      return this.$langs;
     }
   },
   methods: {
@@ -1937,6 +1939,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         name: 'home'
       });
+    },
+    changeLangs: function changeLangs(lang) {
+      console.log(lang);
+      this.$i18n.locale = lang;
     }
   }
 });
@@ -38032,7 +38038,9 @@ var render = function() {
         "b-navbar",
         { attrs: { toggleable: "lg", type: "light" } },
         [
-          _c("b-navbar-brand", { attrs: { href: "#" } }, [_vm._v("Calendar")]),
+          _c("b-navbar-brand", { attrs: { href: "#" } }, [
+            _vm._v(_vm._s(_vm.$t("main.calendar")))
+          ]),
           _vm._v(" "),
           _c("b-navbar-toggle", { attrs: { target: "nav-collapse" } }),
           _vm._v(" "),
@@ -38052,13 +38060,13 @@ var render = function() {
                           _c(
                             "b-dropdown-item",
                             { attrs: { to: { name: "login" } } },
-                            [_vm._v("Login")]
+                            [_vm._v(_vm._s(_vm.$t("auth.login")))]
                           ),
                           _vm._v(" "),
                           _c(
                             "b-dropdown-item",
                             { attrs: { to: { name: "register" } } },
-                            [_vm._v("Register")]
+                            [_vm._v(_vm._s(_vm.$t("auth.register")))]
                           )
                         ],
                         1
@@ -38073,13 +38081,13 @@ var render = function() {
                           _c(
                             "b-dropdown-item",
                             { attrs: { to: { name: "user" } } },
-                            [_vm._v("User")]
+                            [_vm._v(_vm._s(_vm.$t("auth.user")))]
                           ),
                           _vm._v(" "),
                           _c(
                             "b-dropdown-item",
                             { attrs: { to: { name: "admin" } } },
-                            [_vm._v("Admin")]
+                            [_vm._v(_vm._s(_vm.$t("auth.admin")))]
                           ),
                           _vm._v(" "),
                           _c("b-dropdown-divider"),
@@ -38104,10 +38112,18 @@ var render = function() {
                   _c(
                     "b-nav-item-dropdown",
                     { attrs: { text: "Lang", right: "" } },
-                    _vm._l(_vm.getLangs, function(lang) {
+                    _vm._l(_vm.langs, function(lang, i) {
                       return _c(
                         "b-dropdown-item",
-                        { key: lang, attrs: { href: "#" } },
+                        {
+                          key: i,
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.changeLangs(lang)
+                            }
+                          }
+                        },
                         [_vm._v(_vm._s(_vm._f("uppercase")(lang)))]
                       )
                     }),
@@ -38276,7 +38292,7 @@ var render = function() {
                           _c(
                             "b-button",
                             { attrs: { type: "submit", variant: "primary" } },
-                            [_vm._v("Login")]
+                            [_vm._v(_vm._s(_vm.$t("auth.login")))]
                           )
                         ],
                         1
@@ -38396,7 +38412,7 @@ var render = function() {
                           _c(
                             "b-button",
                             { attrs: { type: "submit", variant: "primary" } },
-                            [_vm._v("Register")]
+                            [_vm._v(_vm._s(_vm.$t("auth.register")))]
                           )
                         ],
                         1
@@ -54614,13 +54630,27 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var messages = {
   en: {
-    message: {
-      hello: 'Hello'
+    main: {
+      calendar: 'Calendar'
+    },
+    auth: {
+      login: 'Login',
+      register: 'Register',
+      password: 'Password',
+      user: 'User profile',
+      admin: 'Admin panel'
     }
   },
   pl: {
-    message: {
-      hello: 'Witaj'
+    main: {
+      calendar: 'Kalendarz'
+    },
+    auth: {
+      login: 'Zaloguj się',
+      register: 'Zarejestruj się',
+      password: 'Hasło',
+      user: 'Twój profil',
+      admin: 'Panel administracyjny'
     }
   }
 };

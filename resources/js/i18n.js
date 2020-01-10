@@ -5,13 +5,27 @@ Vue.use(VueI18n)
 
 const messages = {
     en: {
-        message: {
-        hello: 'Hello'
+        main: {
+            calendar: 'Calendar'
+        },
+        auth: {
+            login: 'Login',
+            register: 'Register',
+            password: 'Password',
+            user: 'User profile',
+            admin: 'Admin panel'
         }
 },
     pl: {
-        message: {
-        hello: 'Witaj'
+        main: {
+            calendar: 'Kalendarz'
+        },
+        auth: {
+            login: 'Zaloguj się',
+            register: 'Zarejestruj się',
+            password: 'Hasło',
+            user: 'Twój profil',
+            admin: 'Panel administracyjny'
         }
     }
 }

@@ -11,7 +11,7 @@
                             <b-form-group label="Password:" label-for="password">
                                 <b-form-input id="password" type="password" placeholder="Enter password" required v-model="password"></b-form-input>
                             </b-form-group>
-                            <b-button type="submit" variant="primary">Register</b-button>
+                            <b-button type="submit" variant="primary">{{ $t('auth.register') }}</b-button>
                         </b-form>
                     </b-card>
                 </b-col>
