@@ -13,11 +13,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <script>
-        window.default_locale = "{{ config('app.locale') }}";
-        window.fallback_locale = "{{ config('app.fallback_locale') }}";
-        window.messages = @json($messages);
-    </script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
 </head>
 <body>
     <div id="app"></div>

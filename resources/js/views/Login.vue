@@ -1,22 +1,27 @@
 <template>
     <section>
-        <b-container>
-            <b-row>
-                <b-col sm="8" offset-md="2">
-                    <b-card class="mt-3" header="Login">
-                        <b-form @submit="loginUser">
-                            <b-form-group label="Email:" label-for="email">
-                                <b-form-input id="email" type="email" placeholder="Enter email" required v-model="email"></b-form-input>
-                            </b-form-group>
-                            <b-form-group label="Password:" label-for="password">
-                                <b-form-input id="password" type="password" placeholder="Enter password" required v-model="password"></b-form-input>
-                            </b-form-group>
-                            <b-button type="submit" variant="primary">{{ $t('auth.login') }}</b-button>
-                        </b-form>
-                    </b-card>
-                </b-col>
-            </b-row>
-        </b-container>
+        <div class="row">
+            <div class="col-sm-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        {{ $t("auth.login") }}
+                    </div>
+                    <div class="card-body">
+                        <form @submit="loginUser">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId" placeholder="Email" v-model="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">{{ $t('auth.password') }}</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" v-model="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">{{ $t('auth.login') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </template>
 

@@ -12,10 +12,12 @@ const messages = {
             login: 'Login',
             register: 'Register',
             password: 'Password',
-            user: 'User profile',
-            admin: 'Admin panel'
+            user: 'User',
+            admin: 'Admin',
+            logout: 'Logout',
+            email: 'Email'
         }
-},
+    },
     pl: {
         main: {
             calendar: 'Kalendarz'
@@ -25,7 +27,9 @@ const messages = {
             register: 'Zarejestruj się',
             password: 'Hasło',
             user: 'Twój profil',
-            admin: 'Panel administracyjny'
+            admin: 'Panel administracyjny',
+            logout: 'Wyloguj',
+            email: 'Email'
         }
     }
 }

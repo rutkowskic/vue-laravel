@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\File;
 // use ExportLocalization;
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +13,5 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('{any}', function () {
-    return view('index', ['messages' => ExportLocalization::export()->toArray()]);
+    return view('index');
 })->where('any', '.*');
