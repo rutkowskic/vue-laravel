@@ -1841,6 +1841,65 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Dropdown.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Dropdown.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      isHidden: false
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    var $root = this.$root;
+    $root.$on('dropdown:open', function () {
+      return _this.isHidden = true;
+    });
+    $root.$on('dropdown:hide', function () {
+      return _this.isHidden = false;
+    }); // --- hide dropdown on document click event
+
+    if (!$root['is-dropdown']) {
+      Object.defineProperty($root, 'is-dropdown', {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: true
+      });
+
+      document.onmousedown = function (e) {
+        var target = e.target;
+        var dropdown = target.closest('.dropdown-toggle') || target.closest('.dropdown-menu');
+
+        if (!dropdown) {
+          $root.$emit('dropdown:hide');
+        }
+      };
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Admin.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Admin.vue?vue&type=script&lang=js& ***!
@@ -1869,6 +1928,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_Dropdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Dropdown */ "./resources/js/components/Dropdown.vue");
 //
 //
 //
@@ -1916,14 +1976,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    'dropdown': _components_Dropdown__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
-      langs: ['en', 'pl'],
-      showAuth: false,
-      showUser: false,
-      showLang: false
+      langs: ['en', 'pl']
     };
   },
   computed: {
@@ -1952,14 +2012,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeLangs: function changeLangs(lang) {
       this.$i18n.locale = lang;
-    },
-    onClose: function onClose(dataModel) {
-      this[dataModel] = false;
     }
   },
   destroyed: function destroyed() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+  },
+  created: function created() {
+    console.log(this);
   }
 });
 
@@ -5991,6 +6051,64 @@ VueI18n.version = '8.15.3';
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "nav-item dropdown" }, [
+    _c(
+      "a",
+      {
+        ref: "authDropButton",
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          href: "#",
+          id: "auth",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        },
+        on: {
+          click: function($event) {
+            _vm.isHidden = !_vm.isHidden
+          }
+        }
+      },
+      [_vm._t("header")],
+      2
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "dropdown-menu",
+        class: { show: _vm.isHidden },
+        attrs: { "aria-labelledby": "auth" }
+      },
+      [_vm._t("body")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Admin.vue?vue&type=template&id=7abcea40&":
 /*!***************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Admin.vue?vue&type=template&id=7abcea40& ***!
@@ -6049,217 +6167,149 @@ var render = function() {
           "div",
           { staticClass: "collapse navbar-collapse", attrs: { id: "my-nav" } },
           [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-              !_vm.isLoging
-                ? _c("li", { staticClass: "nav-item dropdown" }, [
-                    _c(
-                      "a",
-                      {
-                        ref: "authDropButton",
-                        staticClass: "nav-link dropdown-toggle",
-                        attrs: {
-                          href: "#",
-                          id: "auth",
-                          role: "button",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.showAuth = !_vm.showAuth
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    Auth\n                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
+            _c(
+              "ul",
+              { staticClass: "navbar-nav mr-auto" },
+              [
+                !_vm.isLoging
+                  ? _c("dropdown", {
+                      scopedSlots: _vm._u(
+                        [
                           {
-                            name: "closable",
-                            rawName: "v-closable",
-                            value: {
-                              exclude: ["authDropButton"],
-                              handler: "onClose",
-                              dataModel: "showAuth"
+                            key: "header",
+                            fn: function() {
+                              return [
+                                _vm._v(
+                                  "\n                        Auth\n                    "
+                                )
+                              ]
                             },
-                            expression:
-                              "{exclude: ['authDropButton'], handler: 'onClose', dataModel: 'showAuth'}"
+                            proxy: true
+                          },
+                          {
+                            key: "body",
+                            fn: function() {
+                              return [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { to: { name: "login" } }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("auth.login")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { to: { name: "register" } }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("auth.register")))]
+                                )
+                              ]
+                            },
+                            proxy: true
                           }
                         ],
-                        staticClass: "dropdown-menu",
-                        class: { show: _vm.showAuth },
-                        attrs: { "aria-labelledby": "auth" }
-                      },
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { to: { name: "login" } }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("auth.login")))]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { to: { name: "register" } }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("auth.register")))]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.isLoging
-                ? _c("li", { staticClass: "nav-item dropdown" }, [
-                    _c(
-                      "a",
-                      {
-                        ref: "userDropButton",
-                        staticClass: "nav-link dropdown-toggle",
-                        attrs: {
-                          href: "#",
-                          id: "user",
-                          role: "button",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.showUser = !_vm.showUser
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    User\n                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "closable",
-                            rawName: "v-closable",
-                            value: {
-                              exclude: ["userDropButton"],
-                              handler: "onClose",
-                              dataModel: "showUser"
-                            },
-                            expression:
-                              "{exclude: ['userDropButton'], handler: 'onClose', dataModel: 'showUser'}"
-                          }
-                        ],
-                        staticClass: "dropdown-menu",
-                        class: { show: _vm.showUser },
-                        attrs: { "aria-labelledby": "user" }
-                      },
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { to: { name: "user" } }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("auth.user")))]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            on: {
-                              click: function($event) {
-                                return _vm.logout()
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("auth.logout")))]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item dropdown" }, [
-                _c(
-                  "a",
-                  {
-                    ref: "langDropButton",
-                    staticClass: "nav-link dropdown-toggle",
-                    attrs: {
-                      href: "#",
-                      id: "lang",
-                      role: "button",
-                      "data-toggle": "dropdown",
-                      "aria-haspopup": "true",
-                      "aria-expanded": "false"
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.showLang = !_vm.showLang
-                      }
-                    }
-                  },
-                  [_vm._v("\n                    Lang\n                    ")]
-                ),
+                        null,
+                        false,
+                        3829516814
+                      )
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "closable",
-                        rawName: "v-closable",
-                        value: {
-                          exclude: ["langDropButton"],
-                          handler: "onClose",
-                          dataModel: "showLang"
-                        },
-                        expression:
-                          "{exclude: ['langDropButton'], handler: 'onClose', dataModel: 'showLang'}"
-                      }
-                    ],
-                    staticClass: "dropdown-menu",
-                    class: { show: _vm.showLang },
-                    attrs: { "aria-labelledby": "lang" }
-                  },
-                  _vm._l(_vm.langs, function(lang, i) {
-                    return _c(
-                      "a",
-                      {
-                        key: i,
-                        staticClass: "dropdown-item",
-                        on: {
-                          click: function($event) {
-                            return _vm.changeLangs(lang)
+                _vm.isLoging
+                  ? _c("dropdown", {
+                      scopedSlots: _vm._u(
+                        [
+                          {
+                            key: "header",
+                            fn: function() {
+                              return [
+                                _vm._v(
+                                  "\n                        User\n                    "
+                                )
+                              ]
+                            },
+                            proxy: true
+                          },
+                          {
+                            key: "body",
+                            fn: function() {
+                              return [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { to: { name: "user" } }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("auth.user")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.logout()
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("auth.logout")))]
+                                )
+                              ]
+                            },
+                            proxy: true
                           }
-                        }
+                        ],
+                        null,
+                        false,
+                        722755801
+                      )
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("dropdown", {
+                  scopedSlots: _vm._u([
+                    {
+                      key: "header",
+                      fn: function() {
+                        return [
+                          _vm._v(
+                            "\n                        Lang\n                    "
+                          )
+                        ]
                       },
-                      [_vm._v(_vm._s(_vm._f("uppercase")(lang)))]
-                    )
-                  }),
-                  0
-                )
-              ])
-            ])
+                      proxy: true
+                    },
+                    {
+                      key: "body",
+                      fn: function() {
+                        return _vm._l(_vm.langs, function(lang, i) {
+                          return _c(
+                            "a",
+                            {
+                              key: i,
+                              staticClass: "dropdown-item",
+                              on: {
+                                click: function($event) {
+                                  return _vm.changeLangs(lang)
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm._f("uppercase")(lang)))]
+                          )
+                        })
+                      },
+                      proxy: true
+                    }
+                  ])
+                })
+              ],
+              1
+            )
           ]
         )
       ]
@@ -22722,54 +22772,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('uppercase', function (value) 
   value = value.toString();
   return value.toUpperCase();
 });
-var handleOutsideClick;
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.directive('closable', {
-  bind: function bind(el, binding, vnode) {
-    handleOutsideClick = function handleOutsideClick(e) {
-      e.stopPropagation();
-      var _binding$value = binding.value,
-          handler = _binding$value.handler,
-          exclude = _binding$value.exclude,
-          dataModel = _binding$value.dataModel;
-      var clickedOnExcludedEl = false;
-      console.log(dataModel);
-      exclude.forEach(function (refName) {
-        if (!clickedOnExcludedEl) {
-          var excludedEl = vnode.context.$refs[refName];
-          clickedOnExcludedEl = excludedEl.contains(e.target);
-        }
-      });
-
-      if (!clickedOnExcludedEl) {
-        vnode.context[handler](dataModel);
-      }
-    };
-
-    document.addEventListener('click', handleOutsideClick);
-    document.addEventListener('touchstart', handleOutsideClick);
-  },
-  unbind: function unbind() {
-    document.removeEventListener('click', handleOutsideClick);
-    document.removeEventListener('touchstart', handleOutsideClick);
-  },
-  componentUpdated: function componentUpdated(el, binding, vnode, oldVnode) {
-    var _binding$value2 = binding.value,
-        handler = _binding$value2.handler,
-        exclude = _binding$value2.exclude,
-        dataModel = _binding$value2.dataModel;
-    var test = false;
-    exclude.forEach(function (refName) {
-      if (!vnode.context.$refs[refName]) {
-        test = true;
-      }
-    });
-
-    if (test) {
-      document.removeEventListener('click', handleOutsideClick);
-      document.removeEventListener('touchstart', handleOutsideClick);
-    }
-  }
-});
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   render: function render(h) {
@@ -22779,6 +22781,75 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   store: _store_store__WEBPACK_IMPORTED_MODULE_2__["default"],
   i18n: _i18n__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
+
+/***/ }),
+
+/***/ "./resources/js/components/Dropdown.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/Dropdown.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dropdown.vue?vue&type=template&id=ef782e08& */ "./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08&");
+/* harmony import */ var _Dropdown_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Dropdown.vue?vue&type=script&lang=js& */ "./resources/js/components/Dropdown.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Dropdown_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Dropdown.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Dropdown.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/Dropdown.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dropdown_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Dropdown.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Dropdown.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dropdown_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08& ***!
+  \*****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Dropdown.vue?vue&type=template&id=ef782e08& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Dropdown.vue?vue&type=template&id=ef782e08&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dropdown_vue_vue_type_template_id_ef782e08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
