@@ -15,7 +15,9 @@ const messages = {
             user: 'User',
             admin: 'Admin',
             logout: 'Logout',
-            email: 'Email'
+            email: 'Email',
+            lang: 'Language',
+            auth: 'Authentication'
         }
     },
     pl: {
@@ -29,7 +31,9 @@ const messages = {
             user: 'Twój profil',
             admin: 'Panel administracyjny',
             logout: 'Wyloguj',
-            email: 'Email'
+            email: 'Email',
+            lang: 'Język',
+            auth: 'Autoryzacja'
         }
     }
 }

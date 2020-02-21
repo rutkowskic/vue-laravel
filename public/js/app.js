@@ -1886,14 +1886,20 @@ __webpack_require__.r(__webpack_exports__);
         value: true
       });
 
-      document.onmousedown = function (e) {
+      document.onclick = function (e) {
         var target = e.target;
-        var dropdown = target.closest('.dropdown-toggle') || target.closest('.dropdown-menu');
+        var dropdown = target.closest('.dropdown-toggle');
 
         if (!dropdown) {
           $root.$emit('dropdown:hide');
         }
       };
+    }
+  },
+  methods: {
+    toggle: function toggle() {
+      this.$root.$emit('dropdown:hide');
+      this.isHidden = !this.isHidden;
     }
   }
 });
@@ -6070,21 +6076,16 @@ var render = function() {
     _c(
       "a",
       {
-        ref: "authDropButton",
         staticClass: "nav-link dropdown-toggle",
         attrs: {
           href: "#",
-          id: "auth",
+          id: "dropdown",
           role: "button",
           "data-toggle": "dropdown",
           "aria-haspopup": "true",
           "aria-expanded": "false"
         },
-        on: {
-          click: function($event) {
-            _vm.isHidden = !_vm.isHidden
-          }
-        }
+        on: { click: _vm.toggle }
       },
       [_vm._t("header")],
       2
@@ -6095,7 +6096,7 @@ var render = function() {
       {
         staticClass: "dropdown-menu",
         class: { show: _vm.isHidden },
-        attrs: { "aria-labelledby": "auth" }
+        attrs: { "aria-labelledby": "dropdown" }
       },
       [_vm._t("body")],
       2
@@ -6180,7 +6181,9 @@ var render = function() {
                             fn: function() {
                               return [
                                 _vm._v(
-                                  "\n                        Auth\n                    "
+                                  "\n                        " +
+                                    _vm._s(_vm.$t("auth.auth")) +
+                                    "\n                    "
                                 )
                               ]
                             },
@@ -6214,7 +6217,7 @@ var render = function() {
                         ],
                         null,
                         false,
-                        3829516814
+                        45162804
                       )
                     })
                   : _vm._e(),
@@ -6228,7 +6231,9 @@ var render = function() {
                             fn: function() {
                               return [
                                 _vm._v(
-                                  "\n                        User\n                    "
+                                  "\n                        " +
+                                    _vm._s(_vm.$t("auth.user")) +
+                                    "\n                    "
                                 )
                               ]
                             },
@@ -6266,7 +6271,7 @@ var render = function() {
                         ],
                         null,
                         false,
-                        722755801
+                        3884201571
                       )
                     })
                   : _vm._e(),
@@ -6278,7 +6283,9 @@ var render = function() {
                       fn: function() {
                         return [
                           _vm._v(
-                            "\n                        Lang\n                    "
+                            "\n                        " +
+                              _vm._s(_vm.$t("auth.lang")) +
+                              "\n                    "
                           )
                         ]
                       },
@@ -22880,7 +22887,9 @@ var messages = {
       user: 'User',
       admin: 'Admin',
       logout: 'Logout',
-      email: 'Email'
+      email: 'Email',
+      lang: 'Language',
+      auth: 'Authentication'
     }
   },
   pl: {
@@ -22894,7 +22903,9 @@ var messages = {
       user: 'Twój profil',
       admin: 'Panel administracyjny',
       logout: 'Wyloguj',
-      email: 'Email'
+      email: 'Email',
+      lang: 'Język',
+      auth: 'Autoryzacja'
     }
   }
 };

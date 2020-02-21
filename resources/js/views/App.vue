@@ -9,7 +9,7 @@
                 <ul class="navbar-nav mr-auto">
                     <dropdown v-if="!isLoging">
                         <template v-slot:header>
-                            Auth
+                            {{ $t("auth.auth") }}
                         </template>
                         <template v-slot:body>
                             <router-link class="dropdown-item" :to="{ name: 'login'}">{{ $t("auth.login") }}</router-link>
@@ -18,7 +18,7 @@
                     </dropdown>
                     <dropdown v-if="isLoging">
                         <template v-slot:header>
-                            User
+                            {{ $t("auth.user") }}
                         </template>
                         <template v-slot:body>
                             <router-link class="dropdown-item" :to="{ name: 'user'}">{{ $t("auth.user") }}</router-link>
@@ -27,7 +27,7 @@
                     </dropdown>
                     <dropdown>
                         <template v-slot:header>
-                            Lang
+                            {{ $t("auth.lang") }}
                         </template>
                         <template v-slot:body>
                             <a class="dropdown-item" v-for="(lang, i) in langs" :key="i" @click="changeLangs(lang)">{{ lang | uppercase }}</a>
