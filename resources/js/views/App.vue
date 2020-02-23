@@ -81,9 +81,6 @@
         destroyed(){
             localStorage.removeItem('token')
             localStorage.removeItem('user')
-        },
-        created(){
-            console.log(this)
         }
     }
 </script>
